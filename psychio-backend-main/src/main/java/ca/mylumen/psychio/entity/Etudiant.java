@@ -1,20 +1,20 @@
 package ca.mylumen.psychio.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "etudiant")
 public class Etudiant {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String matricule;
     private String nom;
-
     private  String prenom;
-
     private int age;
+
     public Etudiant(Long id, String matricule, String nom, String prenom, int age) {
         this.id = id;
         this.matricule = matricule;
@@ -62,14 +62,5 @@ public class Etudiant {
     public void setAge(int age) {
         this.age = age;
     }
-    @Override
-    public String toString() {
-        return "Etudiant{" +
-                "id=" + id +
-                ", matricule='" + matricule + '\'' +
-                ", nom='" + nom + '\'' +
-                ", prenom='" + prenom + '\'' +
-                ", age=" + age +
-                '}';
-    }
+
 }
