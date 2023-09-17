@@ -7,8 +7,9 @@ import jakarta.persistence.*;
 public class Etudiant {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String matricule;
     private String nom;
     private String prenom;
@@ -31,12 +32,12 @@ public class Etudiant {
         // Constructeur par défaut sans arguments
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getMatricule() {

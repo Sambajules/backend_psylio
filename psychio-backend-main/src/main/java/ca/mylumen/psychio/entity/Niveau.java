@@ -1,5 +1,6 @@
 package ca.mylumen.psychio.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -8,29 +9,34 @@ import java.util.List;
 public class Niveau {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
 
     private String nom;
 
     @OneToMany(mappedBy = "niveau")
+    @JsonIgnore
     private List<Etudiant> etudiants;
-
-    public Niveau(Long id, String nom, List<Etudiant> etudiants) {
-        this.id = id;
-        this.nom = nom;
-        this.etudiants = etudiants;
-    }
 
     public Niveau() {
         // Constructeur par défaut sans arguments
     }
 
-    public void setId(Long id) {
+    public Niveau(int id) {
         this.id = id;
     }
 
-    public Long getId() {
+    public Niveau(int id, String nom, List<Etudiant> etudiants) {
+        this.id = id;
+        this.nom = nom;
+        this.etudiants = etudiants;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
         return id;
     }
 

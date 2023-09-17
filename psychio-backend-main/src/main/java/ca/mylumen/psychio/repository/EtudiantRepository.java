@@ -1,14 +1,16 @@
 package ca.mylumen.psychio.repository;
 import ca.mylumen.psychio.entity.Etudiant;
+import ca.mylumen.psychio.entity.Niveau;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
 
 import java.util.List;
 
+
+@Repository
 public interface EtudiantRepository extends JpaRepository<Etudiant, Long> {
+    List<Etudiant> findByNiveauId(int niveauId);
 
-
-    @Query("SELECT e FROM Etudiant e JOIN e.niveau n WHERE n.id = :niveauId")
-    List<Etudiant> findByNiveauId(@Param("niveauId") Long niveauId);
+    List<Etudiant> findByNiveau(Niveau niveau);
 }

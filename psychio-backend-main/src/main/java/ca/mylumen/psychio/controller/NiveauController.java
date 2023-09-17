@@ -3,8 +3,11 @@ package ca.mylumen.psychio.controller;
 import ca.mylumen.psychio.entity.Niveau;
 import ca.mylumen.psychio.repository.NiveauRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/niveau")
@@ -12,33 +15,31 @@ public class NiveauController {
 
     @Autowired
     private NiveauRepository niveauRepository;
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Niveau> getNiveauById(@PathVariable("id") Long id) {
-        Niveau niveau = niveauRepository.findById(id).orElse(null);
-        if (niveau != null) {
-            return ResponseEntity.ok(niveau);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @PostMapping("/create")
+    @PostMapping("create")
     public ResponseEntity<Niveau> createNiveau(@RequestBody Niveau niveau) {
         Niveau createdNiveau = niveauRepository.save(niveau);
-        return ResponseEntity.ok(createdNiveau);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdNiveau);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Niveau> updateNiveau(@PathVariable("id") Long id, @RequestBody Niveau niveau) {
-        Niveau existingNiveau = niveauRepository.findById(id).orElse(null);
-        if (existingNiveau != null) {
-            existingNiveau.setNom(niveau.getNom());
-            niveauRepository.save(existingNiveau);
-            return ResponseEntity.ok(existingNiveau);
+    public ResponseEntity<Niveau> updateNiveau(@PathVariable("id") int id, @RequestBody Niveau niveauModifie) {
+        Optional<Niveau> niveauOptional = niveauRepository.findById(id);
+        if (niveauOptional.isPresent()) {
+            Niveau niveauExist = niveauOptional.get();
+            niveauExist.setNom(niveauModifie.getNom());
+            Niveau niveauMisAJour = niveauRepository.save(niveauExist);
+            return ResponseEntity.ok(niveauMisAJour);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteNiveau(@PathVariable("id") Long id) {
+        niveauRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
 
 }
